@@ -85,7 +85,7 @@ return (
                     <h4 className="text-md font-medium text-gray-900">{exercise.name}</h4>
                     <span className="text-sm text-gray-500">1RM: {exercise.one_rep_max}lbs</span>
                   </div>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="text-sm text-gray-500">Set 1: {exercise.set_1}</div>
                     <div className="text-sm text-gray-500">Set 2: {exercise.set_2}</div>
                     <div className="text-sm text-gray-500">Set 3: {exercise.set_3}</div>

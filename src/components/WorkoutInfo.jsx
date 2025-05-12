@@ -95,7 +95,7 @@ const WorkoutInfo = () => {
               {workout.exercises.map((exercise, index) => (
                 <div key={index} className="mb-4 p-4 border rounded-lg bg-gray-50">
                   <h4 className="text-md font-medium text-gray-900">{exercise.name}</h4>
-                  <div className="mt-2 grid grid-cols-3 gap-4">
+                  <div className="mt-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="text-sm text-gray-500">Set 1: {exercise.set_1}</div>
                     <div className="text-sm text-gray-500">Set 2: {exercise.set_2}</div>
                     <div className="text-sm text-gray-500">Set 3: {exercise.set_3}</div>
