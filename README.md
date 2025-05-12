@@ -72,34 +72,6 @@ npm run dev
 ``` 
 The application will be available at http://localhost:5173
 
-## Project Structure
-
-fitness-tracker/
-├── server/
-│ ├── controllers/
-│ │ ├── routineController.js
-│ │ └── workoutController.js
-│ ├── models/
-│ │ ├── user.js
-│ │ ├── routine.js
-│ │ └── workout.js
-│ └── routes/
-│ └── apiRoutes.js
-├── src/
-│ ├── components/
-│ │ ├── RoutineInfo.jsx
-│ │ ├── WorkoutCard.jsx
-│ │ ├── WorkoutsList.jsx
-│ │ ├── WorkoutForm.jsx
-│ │ └── WorkoutInfo.jsx
-│ ├── api/
-│ ├── assets/
-│ ├── App.jsx
-│ ├── main.jsx
-│ └── index.html
-├── package.json
-└── README.md
-
 ## Feedback & Contributions
 
 If you find this project useful or have suggestions to improve it, I’d love to hear from you!  
