@@ -13,6 +13,7 @@ const Profile = () => {
   const [userData, setUserData] = useState({
     name: '',
     email: '',
+    weight: '',
     joinDate: '',
     newPassword: '',
     confirmPassword: ''
@@ -24,6 +25,7 @@ const Profile = () => {
       setUserData({
         name: contextData.name || '',
         email: contextData.email || '',
+        weight: contextData.weight || '',
         joinDate: contextData.createdAt || '',
         newPassword: '',
         confirmPassword: ''
@@ -39,7 +41,7 @@ const Profile = () => {
     e.preventDefault();
       
     // Validate required fields first
-    if (!userData.name || !userData.email) {
+    if (!userData.name || !userData.email || !userData.weight) {
       toast.error("Fields cannot be empty");
       return;
     }
@@ -123,6 +125,17 @@ const Profile = () => {
                       required
                       onChange={(e) => setUserData({ ...userData, email: e.target.value })}
                       autoComplete="email"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Weight</label>
+                    <input
+                      type="number"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-8 pl-2"
+                      value={userData.weight}
+                      required
+                      onChange={(e) => setUserData({ ...userData, weight: e.target.value })}
+                      autoComplete="weight"
                     />
                   </div>
                 </div>

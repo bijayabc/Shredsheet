@@ -47,7 +47,7 @@ const getUserInfo = async (req, res) => {
 }
 
 const updateUserInfo = async (req, res) => {
-  const { name, email, newPassword, confirmPassword } = req.body;
+  const { name, email, weight, newPassword, confirmPassword } = req.body;
 
   try {
     // Validate required fields
@@ -58,7 +58,8 @@ const updateUserInfo = async (req, res) => {
     // Prepare update object
     const updateData = {
       name,
-      email
+      email,
+      weight
     };
 
     // Handle password update if provided
