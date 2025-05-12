@@ -1,5 +1,5 @@
 const Routine = require('../models/routine');
-const User = require('../models/User');
+const User = require('../models/user');
 
 const createRoutine = async (req, res) => {
   try {
