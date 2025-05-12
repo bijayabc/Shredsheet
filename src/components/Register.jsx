@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import api from '../api/axios';
 import { toast } from 'react-toastify';
 
 const Register = () => {
   const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -19,25 +19,35 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setIsLoading(true);
       const res = await api.post(`/register`, formData)
       if (res.data.success) {
         toast.success("Registered successfully! 🎉");
         setTimeout(() => {
           navigate('/login')
         }, 1000)
-      }
-      else{
-        if ((res.data.error)) {
-          toast.error(res.data.error)
-        }
+      } else if (res.data.error) {
+        toast.error(res.data.error);
       }
     } catch (error) {
-      if (error.response?.status === 400) {
-          toast.error(error.response.data.error);
-        } else {
-          toast.error("An unexpected error occurred.");
-        }
-        console.error("Login error:", error);
+      if (error.response?.data?.code === 11000 || 
+          (error.response?.data?.error && error.response?.data?.error.includes('duplicate'))) {
+        toast.error("This email is already registered. Please use a different email or login.");
+      } else if (error.response?.data?.error?.includes('email') && 
+                 error.response?.data?.error?.includes('invalid')) {
+        toast.error("Please enter a valid email address.");
+      } else if (error.response?.status === 400) {
+        toast.error(error.response.data.error);
+      } else if (error.response?.status === 422) {
+        toast.error("Please check your registration details.");
+      } else if (error.code === 'ERR_NETWORK') {
+        toast.error("Network error. Please check your internet connection.");
+      } else {
+        toast.error("An unexpected error occurred. Please try again later.");
+      }
+      console.error("Registration error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -156,9 +166,22 @@ const Register = () => {
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 ${
+                  isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-indigo-700'
+                } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+                disabled={isLoading}
               >
-                Register
+                {isLoading ? (
+                  <span className="flex items-center">
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Registering...
+                  </span>
+                ) : (
+                  "Register"
+                )}
               </button>
             </div>
           </form>

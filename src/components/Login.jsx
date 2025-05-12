@@ -30,8 +30,14 @@ const Login = () => {
     } catch (error) {
       if (error.response?.status === 401) {
         toast.error(error.response.data.error);
+      } else if (error.response?.status === 422) {
+        // Handle validation errors
+        toast.error("Please check your email and password.");
+      } else if (error.code === 'ERR_NETWORK') {
+        // Handle network errors
+        toast.error("Network error. Please check your internet connection.");
       } else {
-        toast.error("An unexpected error occurred.");
+        toast.error("An unexpected error occurred. Please try again later.");
       }
       console.error("Login error:", error);
     } finally {

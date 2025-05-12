@@ -43,9 +43,14 @@ const registerUser = async (req, res) => {
     await user.save();
 
     return res.status(201).json({ success: true });
-  } catch (err) {
-    console.error("Error saving user:", err);
-    return res.status(500).json({ error: "Some error occured!" });
+  } catch (error) {
+      if (error.code === 11000) {
+      return res.status(400).json({
+        error: "This email is already registered. Please use a different email or login.",
+      });
+    }
+
+  return res.status(500).json({ error: "Internal server error." });
   }
 };
 
