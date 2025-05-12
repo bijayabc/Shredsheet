@@ -39,7 +39,7 @@ const Dashboard = () => {
           </div>
         </Link>
 
-        <div className="bg-white overflow-hidden shadow rounded-lg">
+        <Link to="/profile" className="bg-white overflow-hidden shadow rounded-lg hover:bg-gray-50">
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -53,7 +53,7 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-        </div>
+        </Link>
 
         <Link to="/routines" className="bg-white overflow-hidden shadow rounded-lg hover:bg-gray-50">
           <div className="p-5">
