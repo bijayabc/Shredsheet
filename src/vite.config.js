@@ -35,13 +35,13 @@ export default defineConfig({
         screenshots: [
           {
             src: "screenshot-wide.png",
-            sizes: "1024x768",
+            sizes: "1918x1080",
             type: "image/png",
             form_factor: "wide"
           },
           {
             src: "screenshot-portrait.png",
-            sizes: "768x1024",
+            sizes: "1179x2556",
             type: "image/png"
           }
         ]
