@@ -114,7 +114,7 @@ const RoutineForm = () => {
                         </label>
                         <input
                           type="text"
-                          placeholder="Weight × Reps"
+                          placeholder="Lb x Reps"
                           className="w-full rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 h-8 pl-2"
                           onChange={(e) => {
                             const newExercises = [...routineData.exercises];

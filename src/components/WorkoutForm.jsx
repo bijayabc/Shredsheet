@@ -121,6 +121,7 @@ const WorkoutForm = () => {
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-8 pl-2"
                 value={workoutData.title}
                 onChange={(e) => setWorkoutData({ ...workoutData, title: e.target.value })}
+                placeholder='e.g., YMCA back day'
                 required
               />
             </div>
@@ -132,6 +133,7 @@ const WorkoutForm = () => {
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-8 pl-2"
                 value={workoutData.duration}
                 onChange={(e) => setWorkoutData({ ...workoutData, duration: e.target.value })}
+                placeholder='e.g., 86'
                 required
               />
             </div>
@@ -195,7 +197,7 @@ const WorkoutForm = () => {
                       </label>
                       <input
                         type="text"
-                        placeholder="Weight × Reps"
+                        placeholder="Lb × Reps"
                         required
                         className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 h-8 pl-2"
                         value={exercise[set]}

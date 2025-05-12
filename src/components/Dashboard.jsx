@@ -20,7 +20,7 @@ const Dashboard = () => {
     })
   }
   return (
-    <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
       {/* Stats Grid */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         <Link to="/workouts" className="bg-white overflow-hidden shadow rounded-lg hover:bg-gray-50">
@@ -84,7 +84,7 @@ const Dashboard = () => {
           {dashboard_workouts.map((workout) => (
             <div 
               key={workout._id} 
-              className="px-4 py-5 sm:px-6 bg-white shadow sm:rounded-lg hover:bg-gray-50 transition-colors duration-200"
+              className="px-4 py-5 sm:px-6 bg-white shadow  sm:rounded-lg hover:bg-gray-50 transition-colors duration-200"
               onClick={() => handleClick(workout)}
             >
               <div className="flex items-center justify-between">
@@ -93,8 +93,8 @@ const Dashboard = () => {
                   {new Date(workout.date).toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}
                 </div>
               </div>
-              <div className="mt-2 sm:flex sm:justify-between">
-                <div className="sm:flex">
+              <div className="mt-1 flex justify-between">
+                <div className="sm:flex mt-1">
                   <p className="text-sm text-gray-500">{workout.duration} minutes</p>
                 </div>
                 <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">

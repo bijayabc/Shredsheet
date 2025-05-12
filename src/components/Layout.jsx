@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { RiUser3Line, RiLogoutBoxRLine } from 'react-icons/ri';
 import { toast } from 'react-toastify';
-import axios from 'axios';
 import api from '../api/axios';
 
 const Layout = () => {
@@ -55,7 +54,7 @@ const Layout = () => {
           <div className="flex justify-between h-16">
             <div className="flex">
               <div className="flex-shrink-0 flex items-center">
-                <Link to="/dashboard" className="text-2xl font-bold text-indigo-600">
+                <Link to="/dashboard" className="text-xl md:text-2xl font-bold text-indigo-600">
                   ShredSheet
                 </Link>
               </div>

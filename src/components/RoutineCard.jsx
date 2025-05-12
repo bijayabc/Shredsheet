@@ -9,7 +9,7 @@ const RoutineCard = ({ title, exerciseCount, clickfn }) => (
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-3">
             <RiFileList3Line className="h-5 w-5 text-indigo-500" />
-            <h3 className="text-lg font-medium text-gray-900">{title}</h3>
+            <h3 className="sm:text-lg font-medium text-gray-900">{title}</h3>
           </div>
           <span className="text-sm text-gray-500">{exerciseCount} exercises</span>
         </div>
