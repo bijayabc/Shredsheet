@@ -12,6 +12,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['gym.svg', 'apple-touch-icon.png'],
       manifest: {
+        id: "/",
         name: 'ShredSheet',
         short_name: 'ShredSheet',
         description: 'Your fitness tracker PWA!',
@@ -29,6 +30,19 @@ export default defineConfig({
             src: 'pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png'
+          }
+        ],
+        screenshots: [
+          {
+            src: "screenshot-wide.png",
+            sizes: "1024x768",
+            type: "image/png",
+            form_factor: "wide"
+          },
+          {
+            src: "screenshot-portrait.png",
+            sizes: "768x1024",
+            type: "image/png"
           }
         ]
       }
