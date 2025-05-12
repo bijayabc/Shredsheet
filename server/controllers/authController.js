@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt') // To hash password
 const jwt = require('jsonwebtoken'); // To generate auth token
-const User = require('../models/User');
+const User = require('../models/user');
 
 SALT_ROUNDS = 10
 async function createHash(password) {
