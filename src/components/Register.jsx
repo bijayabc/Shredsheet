@@ -32,7 +32,12 @@ const Register = () => {
         }
       }
     } catch (error) {
-      toast.error("Something went wrong. Please try again.");
+      if (error.response?.status === 400) {
+          toast.error(error.response.data.error);
+        } else {
+          toast.error("An unexpected error occurred.");
+        }
+        console.error("Login error:", error);
     }
   };
 
