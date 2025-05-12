@@ -156,7 +156,7 @@ const WorkoutForm = () => {
               <label className="block text-sm font-medium text-gray-700">Date</label>
               <input
                 type="date"
-                className="appearance-none mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-8 pl-2"
+                className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-10 px-2 text-sm"
                 value={workoutData.date}
                 onChange={(e) => setWorkoutData({ ...workoutData, date: e.target.value })}
                 required
