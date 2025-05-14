@@ -5,6 +5,10 @@ import api from '../api/axios';
 
 const Login = () => {
   const navigate = useNavigate()
+  const [savedEmails, setSavedEmails] = useState(() => {
+    const stored = localStorage.getItem('autocomplete_emails');
+    return stored ? JSON.parse(stored) : { emails: [] };
+  });
 
   const [formData, setFormData] = useState({
     email: '',
@@ -22,6 +26,13 @@ const Login = () => {
         toast.success("Login Successful!")
         const auth_token = res.data.auth_token
         localStorage.setItem('auth_token', auth_token)
+
+        // Save emails to local storage for autocomplete feature
+        if (!savedEmails.emails.includes(formData.email)) {
+          const updatedEmails = { emails: [...savedEmails.emails, formData.email] };
+          setSavedEmails(updatedEmails);
+          localStorage.setItem('autocomplete_emails', JSON.stringify(updatedEmails));
+        }
 
         setTimeout(() => {
           navigate('/dashboard')
@@ -75,7 +86,15 @@ const Login = () => {
                   required
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  list='autocomplete-emails'
                 />
+                <datalist id='autocomplete-emails'>
+                  {
+                    savedEmails.emails.map((email, index) => (
+                      <option key={index}>{email}</option>
+                    ))
+                  }
+                </datalist>
               </div>
             </div>
 
