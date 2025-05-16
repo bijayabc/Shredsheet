@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {RiDeleteBinLine} from 'react-icons/ri'
 import api from '../api/axios';
 import { toast } from 'react-toastify';
@@ -94,6 +94,7 @@ const WorkoutForm = () => {
       }
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
+      console.log("Error Logging Workout: ", error)
     }
     
   };

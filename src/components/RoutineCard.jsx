@@ -1,4 +1,3 @@
-import React from 'react';
 import { RiFileList3Line } from 'react-icons/ri';
 
 const RoutineCard = ({ title, exerciseCount, clickfn }) => (

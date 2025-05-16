@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import api from '../api/axios';
@@ -26,6 +25,7 @@ const RoutineInfo = () => {
       }
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
+      console.log("Error Deleting Routine: ", error)
     }
   }
 

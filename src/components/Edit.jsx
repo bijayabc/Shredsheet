@@ -62,6 +62,7 @@ const Edit = () => {
       }
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
+      console.log("Error Updating Routine: ", error)
     }
   };
 

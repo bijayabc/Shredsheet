@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import { toast } from 'react-toastify';
@@ -26,6 +25,7 @@ const WorkoutInfo = () => {
       }
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
+      console.log("Error Deleting Workout: ", error)
     }
   }
 

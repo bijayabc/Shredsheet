@@ -1,4 +1,3 @@
-import React from 'react';
 import { RiCalendarEventLine } from 'react-icons/ri';
 
 const WorkoutCard = ({ title, date, duration, exercises, clickfn }) => (

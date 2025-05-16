@@ -1,6 +1,5 @@
-import React, { use } from 'react';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
-import { RiFileListLine, RiScalesLine, RiFlashlightLine, RiAddLine, RiListCheck2 } from 'react-icons/ri';
+import { RiFileListLine, RiScalesLine, RiFlashlightLine, RiAddLine, RiListCheck2, RiTimeLine } from 'react-icons/ri';
 
 const Dashboard = () => {
   const { userData } = useOutletContext()
@@ -22,16 +21,16 @@ const Dashboard = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
         <Link to="/workouts" className="bg-white overflow-hidden shadow rounded-lg hover:bg-gray-50">
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <RiFileListLine className="h-6 w-6 text-gray-400" />
               </div>
-              <div className="ml-5 w-0 flex-1">
+              <div className="ml-3 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">Total Workout Sessions</dt>
+                  <dt className="text-sm font-medium text-gray-500 truncate">Workout Logs</dt>
                   <dd className="text-2xl font-semibold text-gray-900">{userData.workouts.length}</dd>
                 </dl>
               </div>
@@ -47,7 +46,7 @@ const Dashboard = () => {
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">Current Weight</dt>
+                  <dt className="text-sm font-medium text-gray-500 truncate">Weight</dt>
                   <dd className="text-2xl font-semibold text-gray-900">{userData.weight} lbs</dd>
                 </dl>
               </div>
@@ -63,8 +62,24 @@ const Dashboard = () => {
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">Active Routines</dt>
+                  <dt className="text-sm font-medium text-gray-500 truncate"> All Routines</dt>
                   <dd className="text-2xl font-semibold text-gray-900">{userData.routines.length}</dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </Link>
+        
+        <Link to="/timer" className="bg-white overflow-hidden shadow rounded-lg hover:bg-gray-50">
+          <div className="p-5">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <RiTimeLine className="h-6 w-6 text-gray-400" />
+              </div>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 truncate">Timer</dt>
+                  <dd className="text-2xl font-semibold text-gray-900">Start</dd>
                 </dl>
               </div>
             </div>

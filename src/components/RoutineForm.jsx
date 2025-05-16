@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import api from '../api/axios';
@@ -59,6 +59,7 @@ const RoutineForm = () => {
       }
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
+      console.log("Error Saving Routine: ", error)
     }
     
   };

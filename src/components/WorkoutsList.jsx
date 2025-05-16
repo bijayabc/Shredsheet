@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
 import WorkoutCard from './WorkoutCard';
 import { useNavigate } from 'react-router-dom';
