@@ -68,7 +68,8 @@ const WeightLogs = () => {
                       {new Date(weight.date).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'short',
-                        day: 'numeric'
+                        day: 'numeric',
+                        timeZone: 'UTC'  
                       })}
                       </span>
                     </div>
