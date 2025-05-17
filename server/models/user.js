@@ -34,6 +34,10 @@ const userSchema = mongoose.Schema({
       routines: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Routine'
+      }],
+      weights: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Weight'
       }]
 }, { timestamps: true})
 

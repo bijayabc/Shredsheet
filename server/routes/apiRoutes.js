@@ -5,6 +5,7 @@ const { getUserInfo, updateUserInfo } = require('../controllers/userController')
 const { createWorkout, deleteWorkout } = require('../controllers/workoutController')
 const { createRoutine, updateRoutine, deleteRoutine } = require('../controllers/routineController')
 const authenticateToken = require('../middleware/authMiddleware');
+const { updateWeight, deleteWeight } = require('../controllers/weightController')
 
 // Auth routes
 router.post('/register', registerUser)
@@ -22,6 +23,10 @@ router.delete('/workout', authenticateToken, deleteWorkout)
 router.post('/routine', authenticateToken, createRoutine)
 router.put('/routine', authenticateToken, updateRoutine)
 router.delete('/routine', authenticateToken, deleteRoutine)
+
+// Weight routes
+router.post('/weight', authenticateToken, updateWeight)
+router.delete('/weight/:id', authenticateToken, deleteWeight)
 
 // Catch-all middleware for undefined routes
 router.use((req, res) => {

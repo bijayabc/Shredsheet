@@ -2,36 +2,40 @@ const Routine = require('../models/routine');
 const User = require('../models/user');
 
 const createRoutine = async (req, res) => {
+  const { date, weight } = req.body
+
+  // Input validation
+  if (!weight || weight <= 0) {
+      return res.status(400).json({ 
+          success: false,
+          error: "Valid weight is required!" 
+      })
+  }
+
   try {
-    // Validate request body
-    if (!req.body.exercises || !Array.isArray(req.body.exercises)) {
-      return res.status(400).json({ error: "Invalid routine data format" });
-    }
+      // Create new weight record with user reference
+      const weightRecord = new Weight({
+          date: date || Date.now(),
+          weight,
+          user: req.user._id
+      })
+      await weightRecord.save()
 
-    // Add user reference to workout
-    const routine = new Routine({
-      ...req.body,
-      user: req.user._id // From auth middleware
-    });
+      // Add weight record to user's weights array
+      await User.findByIdAndUpdate(req.user._id, {
+          $push: { weights: weightRecord._id }
+      })
 
-    await routine.save();
-
-    // Push the workout ID to the user's workouts array
-    await User.findByIdAndUpdate(req.user._id, {
-      $push: { routines: routine._id }
-    })
-
-    return res.status(201).json({
-      success: true,
-      routine
-    });
-
+      res.status(201).json({
+          success: true,
+          data: weightRecord
+      })
   } catch (error) {
-    console.error("Error saving routine:", error);
-    return res.status(500).json({
-      error: "Failed to save routine",
-      details: error.message
-    });
+      console.error('Error logging weight:', error)
+      res.status(500).json({
+          success: false,
+          error: "Failed to log weight. Please try again."
+      })
   }
 }
 
@@ -86,7 +90,7 @@ const deleteRoutine = async (req, res) => {
     // Remove routine document
     await Routine.findByIdAndDelete(routine._id);
     
-    // Update user's workouts array to remove the reference
+    // Update user's routines array to remove the reference
     await User.findByIdAndUpdate(req.user._id, {
       $pull: { routines: routine._id }
     });

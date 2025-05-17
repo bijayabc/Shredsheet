@@ -12,7 +12,7 @@ const getUserInfo = async (req, res) => {
     const auth_token = req.headers.authorization.split('Bearer ')[1];
 
     // Verify the token
-    const { userId, email } = jwt.verify(auth_token, process.env.MY_SECRET_KEY);
+    const { userId } = jwt.verify(auth_token, process.env.MY_SECRET_KEY);
 
     // Find user but exclude password from the response
     const user = await User.findById(userId)
@@ -24,7 +24,11 @@ const getUserInfo = async (req, res) => {
       .populate({
         path: 'routines',
         options: { sort: { createdAt: -1 } }
-      });
+      })
+      .populate({
+        path: 'weights',
+        options: { sort: { date: -1 }}
+      })
 
     if (!user) {
       return res.status(404).json({ error: 'User not found!' });

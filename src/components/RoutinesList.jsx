@@ -1,4 +1,4 @@
-import { Link, useNavigate, useOutletContext } from 'react-router-dom';
+import React from 'react';import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import RoutineCard from './RoutineCard';
 
 const Routines = () => {
