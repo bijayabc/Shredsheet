@@ -60,8 +60,8 @@ const WeightLogs = () => {
           <div className="px-4 py-5 sm:p-6">
             {userData.weights && userData.weights.length > 0 ? (
               <div className="space-y-4">
-                {userData.weights.map((weight, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 border rounded-lg bg-gray-50">
+                {userData.weights.map((weight) => (
+                  <div key={weight._id} className="flex items-center justify-between p-4 border rounded-lg bg-gray-50">
                     <div className="flex items-center space-x-3">
                       <RiScalesLine className="h-5 w-5 text-indigo-500" />
                       <span className="text-sm sm:text-lg text-gray-500">
@@ -119,7 +119,7 @@ const WeightLogs = () => {
                     min="0"
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
                     value={weightData.weight}
-                    onChange={(e) => setWeightData({ ...weightData, weight: e.target.value })}
+                    onChange={(e) => setWeightData({ ...weightData, weight: parseFloat(e.target.value) })}
                     placeholder="Enter weight in lbs"
                   />
                 </div>

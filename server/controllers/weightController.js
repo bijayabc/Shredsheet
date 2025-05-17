@@ -2,10 +2,16 @@ const User = require('../models/user')
 const Weight = require('../models/weight')
 
 const updateWeight = async (req, res) => {
-    const { date, weight } = req.body
+    let { date, weight } = req.body
 
-    // Input validation
-    if (!weight || weight <= 0) {
+    // Sanitize and Validate
+    if (!date || isNaN(Date.parse(date))) {
+        date = new Date()
+    } else {
+        date = new Date(date)
+    }
+
+    if (!weight || weight <= 0 || isNaN(weight)) {
         return res.status(400).json({
             success: false,
             error: "Valid weight is required!"
@@ -15,7 +21,7 @@ const updateWeight = async (req, res) => {
     try {
         // Create new weight record with user reference
         const weightRecord = new Weight({
-            date: date || Date.now(),
+            date: date,
             weight,
             user: req.user._id
         })
