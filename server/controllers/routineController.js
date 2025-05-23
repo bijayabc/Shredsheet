@@ -2,40 +2,36 @@ const Routine = require('../models/routine');
 const User = require('../models/user');
 
 const createRoutine = async (req, res) => {
-  const { date, weight } = req.body
-
-  // Input validation
-  if (!weight || weight <= 0) {
-      return res.status(400).json({ 
-          success: false,
-          error: "Valid weight is required!" 
-      })
-  }
-
   try {
-      // Create new weight record with user reference
-      const weightRecord = new Weight({
-          date: date || Date.now(),
-          weight,
-          user: req.user._id
-      })
-      await weightRecord.save()
+    // Validate request body
+    if (!req.body.exercises || !Array.isArray(req.body.exercises)) {
+      return res.status(400).json({ error: "Invalid routine data format" });
+    }
 
-      // Add weight record to user's weights array
-      await User.findByIdAndUpdate(req.user._id, {
-          $push: { weights: weightRecord._id }
-      })
+    // Add user reference to workout
+    const routine = new Routine({
+      ...req.body,
+      user: req.user._id // From auth middleware
+    });
 
-      res.status(201).json({
-          success: true,
-          data: weightRecord
-      })
+    await routine.save();
+
+    // Push the workout ID to the user's workouts array
+    await User.findByIdAndUpdate(req.user._id, {
+      $push: { routines: routine._id }
+    })
+
+    return res.status(201).json({
+      success: true,
+      routine
+    });
+
   } catch (error) {
-      console.error('Error logging weight:', error)
-      res.status(500).json({
-          success: false,
-          error: "Failed to log weight. Please try again."
-      })
+    console.error("Error saving routine:", error);
+    return res.status(500).json({
+      error: "Failed to save routine",
+      details: error.message
+    });
   }
 }
 
