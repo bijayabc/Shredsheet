@@ -23,7 +23,7 @@ const getUserInfo = async (req, res) => {
       })
       .populate({
         path: 'routines',
-        options: { sort: { createdAt: -1 } }
+        options: { sort: { title: 1 } }
       })
       .populate({
         path: 'weights',
