@@ -9,7 +9,7 @@ const Dashboard = () => {
   }
   const workouts = userData.workouts
 
-  const dashboard_workouts = workouts.length > 5 ? workouts.slice(0, 5) : workouts;
+  const dashboard_workouts = workouts.length > 3 ? workouts.slice(0, 3) : workouts;
 
   const handleClick = (workout) => {
     navigate(`/workouts/${workout._id}`, {
