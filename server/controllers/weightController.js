@@ -33,6 +33,9 @@ const updateWeight = async (req, res) => {
             $push: { weights: weightRecord._id }
         })
 
+        // Update user's weight based on the latest log
+        await User.findByIdAndUpdate(req.user._id, { weight })
+
         res.status(201).json({
             success: true,
             data: weightRecord
