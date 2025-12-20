@@ -96,7 +96,17 @@ const Dashboard = () => {
           </Link>
         </div>
         <div className="mt-4 space-y-4">
-          {dashboard_workouts.map((workout) => (
+          {dashboard_workouts.map((workout) => {
+            const dateOnly = workout.date.split('T')[0]; // "2025-05-15"
+            const [year, month, day] = dateOnly.split('-'); // ["2025", "05", "15"]
+            const localDate = new Date(year, month - 1, day); // local date
+            const formattedDate = localDate.toLocaleDateString('en-US', { 
+              weekday: 'short', 
+              year: 'numeric', 
+              month: 'short', 
+              day: 'numeric' 
+            });
+            return(
             <div 
               key={workout._id} 
               className="px-4 py-5 sm:px-6 bg-white shadow  sm:rounded-lg hover:bg-gray-50 transition-colors duration-200"
@@ -105,7 +115,7 @@ const Dashboard = () => {
               <div className="flex items-center justify-between">
                 <div className="text-sm font-medium text-indigo-600">{workout.title}</div>
                 <div className="text-sm text-gray-500">
-                  {new Date(workout.date).toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}
+                  {formattedDate}
                 </div>
               </div>
               <div className="mt-1 flex justify-between">
@@ -117,7 +127,8 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-          ))}
+          )
+          })}
         </div>
       </div>
 

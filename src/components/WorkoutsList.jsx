@@ -53,16 +53,27 @@ const WorkoutsList = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {workouts.map((workout) => (
+          {workouts.map((workout) => {
+            const dateOnly = workout.date.split('T')[0]; // "2025-05-15"
+            const [year, month, day] = dateOnly.split('-'); // ["2025", "05", "15"]
+            const localDate = new Date(year, month - 1, day); // local date
+            const formattedDate = localDate.toLocaleDateString('en-US', { 
+              weekday: 'short', 
+              year: 'numeric', 
+              month: 'short', 
+              day: 'numeric' 
+            });
+            return (
             <WorkoutCard
               key={workout.id}
               title={workout.title}
-              date={new Date(workout.date).toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}
+              date={formattedDate}
               duration={workout.duration}
               exercises={workout.exercises.length}
               clickfn={() => handleClick(workout)}
             />
-          ))}
+          )
+          })}
         </div>
       </div>
     </div>
