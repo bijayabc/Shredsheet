@@ -34,6 +34,7 @@ const WeightLogs = () => {
   };
 
   const handleDelete = async (weightId) => {
+    if (!window.confirm('Are you sure you want to delete this weight log?')) return
     try {
       const res = await api.delete(`/weight/${weightId}`);
       if (res.data.success) {

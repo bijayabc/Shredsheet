@@ -2,10 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 import {RiDeleteBinLine} from 'react-icons/ri'
 import api from '../api/axios';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+
+let pendingDraftDiscardWarning = false;
 
 const WorkoutForm = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+  const routineExercises = location.state?.routineExercises ?? null
   const toastShown = useRef(false);
 
   const [workoutData, setWorkoutData] = useState(() => {
@@ -16,8 +20,27 @@ const WorkoutForm = () => {
       date: '',
       exercises: [{ id: Date.now(), name: '', set_1: '', set_2: '', set_3: '' }]
     }
+
+    if (routineExercises && routineExercises.length > 0) {
+      const hasDraft = !!localStorage.getItem('workout_log_draft')
+      if (hasDraft) {
+        localStorage.removeItem('workout_log_draft')
+        pendingDraftDiscardWarning = true
+      }
+      return {
+        ...defaultData,
+        exercises: routineExercises.map(ex => ({
+          id: Date.now() + Math.random(),
+          name: ex.name,
+          set_1: ex.set_1,
+          set_2: ex.set_2,
+          set_3: ex.set_3,
+        }))
+      }
+    }
+
     try {
-      // Get the draft from local storage if on exists
+      // Get the draft from local storage if one exists
       const draftString = localStorage.getItem('workout_log_draft')
       if (draftString) {
         const parsedDraft = JSON.parse(draftString)
@@ -35,10 +58,16 @@ const WorkoutForm = () => {
   // Because a component mounts and unmounts multiple times
   useEffect(() => {
     if (!toastShown.current) {
-      const draftString = localStorage.getItem('workout_log_draft')
-      if (draftString) {
-        toast.success("Loading your saved workout draft!")
+      if (pendingDraftDiscardWarning) {
+        toast.warn("Your saved draft was discarded — loading routine exercises instead.")
+        pendingDraftDiscardWarning = false
         toastShown.current = true
+      } else {
+        const draftString = localStorage.getItem('workout_log_draft')
+        if (draftString) {
+          toast.success("Loading your saved workout draft!")
+          toastShown.current = true
+        }
       }
     }
   }, []);

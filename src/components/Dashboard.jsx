@@ -1,9 +1,72 @@
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { RiFileListLine, RiScalesLine, RiFlashlightLine, RiAddLine, RiListCheck2, RiTimeLine } from 'react-icons/ri';
 
 const Dashboard = () => {
   const { userData } = useOutletContext()
   const navigate = useNavigate()
+
+  const TIMER_KEY = 'workout_timer_start'
+  const MAX_DURATION = 30 * 60 * 1000 // 30 minutes in ms
+
+  const [elapsed, setElapsed] = useState(0)
+  const [isRunning, setIsRunning] = useState(false)
+  const startTimeRef = useRef(null)
+
+  // Resume timer on mount if a saved start time exists in localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem(TIMER_KEY)
+    if (saved) {
+      const startTime = parseInt(saved, 10)
+      const alreadyElapsed = Date.now() - startTime
+      if (alreadyElapsed < MAX_DURATION) {
+        startTimeRef.current = startTime
+        setElapsed(alreadyElapsed)
+        setIsRunning(true)
+      } else {
+        localStorage.removeItem(TIMER_KEY)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    let interval
+    if (isRunning) {
+      interval = setInterval(() => {
+        const newElapsed = Date.now() - startTimeRef.current
+        if (newElapsed >= MAX_DURATION) {
+          setElapsed(MAX_DURATION)
+          setIsRunning(false)
+          localStorage.removeItem(TIMER_KEY)
+        } else {
+          setElapsed(newElapsed)
+        }
+      }, 1000)
+    }
+    return () => clearInterval(interval)
+  }, [isRunning])
+
+  const formatTime = (ms) => {
+    const totalSeconds = Math.floor(ms / 1000)
+    const mins = Math.floor(totalSeconds / 60)
+    const secs = totalSeconds % 60
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
+  }
+
+  const handleTimerClick = () => {
+    if (isRunning) {
+      setIsRunning(false)
+      setElapsed(0)
+      startTimeRef.current = null
+      localStorage.removeItem(TIMER_KEY)
+    } else {
+      const now = Date.now()
+      startTimeRef.current = now
+      localStorage.setItem(TIMER_KEY, now.toString())
+      setIsRunning(true)
+    }
+  }
+
   if (!userData) {
     return <div>Loading...</div>;
   }
@@ -70,21 +133,21 @@ const Dashboard = () => {
           </div>
         </Link>
         
-        <Link to="/timer" className="bg-white overflow-hidden shadow rounded-lg hover:bg-gray-50">
+        <button onClick={handleTimerClick} className="bg-white overflow-hidden shadow rounded-lg hover:bg-gray-50 text-left w-full">
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <RiTimeLine className="h-6 w-6 text-gray-400" />
+                <RiTimeLine className={`h-6 w-6 ${isRunning ? 'text-indigo-500' : 'text-gray-400'}`} />
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">Timer</dt>
-                  <dd className="text-2xl font-semibold text-gray-900">Start</dd>
+                  <dt className="text-sm font-medium text-gray-500 truncate">{isRunning ? 'Tap to Stop' : 'Start Timer'}</dt>
+                  <dd className="text-2xl font-semibold text-gray-900">{isRunning ? formatTime(elapsed) : '00:00'}</dd>
                 </dl>
               </div>
             </div>
           </div>
-        </Link>
+        </button>
       </div>
 
       {/* Recent Activity */}

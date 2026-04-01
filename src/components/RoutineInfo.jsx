@@ -9,6 +9,7 @@ const RoutineInfo = () => {
 
   const handleDelete = async(e) => {
     e.preventDefault()
+    if (!window.confirm('Are you sure you want to delete this routine?')) return
     try {
       const res = await api.delete('/routine', {
         data: routine // different syntax for delete route
@@ -54,6 +55,13 @@ return (
         <div className="flex flex-col gap-2 sm:flex-row justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-gray-900">{routine.title}</h2>
           <div className="flex gap-4 items-center">
+            <Link
+              to="/workouts/new"
+              state={{ routineExercises: routine.exercises }}
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-violet-500 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 transition-colors duration-200"
+            >
+              Log Workout
+            </Link>
             <Link
               to={`/routines/edit/${routine._id}`}
               state={{ routine }}

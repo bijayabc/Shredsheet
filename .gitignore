@@ -10,3 +10,6 @@ npm-debug.log*
 
 # Mac OS system files
 .DS_Store
+
+# Claude Code
+CLAUDE.md

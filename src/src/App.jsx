@@ -15,7 +15,6 @@ import WorkoutInfo from '../components/WorkoutInfo';
 import RoutineInfo from '../components/RoutineInfo';
 import NotFound from '../components/NotFound';
 import Edit from '../components/Edit';
-import Timer from '../components/Timer';
 import WeightLogs from '../components/WeightLogs';
 
 function App() {
@@ -37,7 +36,6 @@ function App() {
           <Route path='routines/new' element={<RoutineForm />} />
           <Route path='routines/:id' element={<RoutineInfo />} />
           <Route path='routines/edit/:id' element={<Edit />} />
-          <Route path='timer' element={<Timer />} />
           <Route path='weight' element={<WeightLogs />} />
         </Route>
         <Route path='*' element={<NotFound />} />

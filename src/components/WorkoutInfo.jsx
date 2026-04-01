@@ -9,6 +9,7 @@ const WorkoutInfo = () => {
 
   const handleDelete = async (e) => {
     e.preventDefault()
+    if (!window.confirm('Are you sure you want to delete this workout?')) return
     try {
       const res = await api.delete('/workout', {
         data: workout // different syntax for delete route

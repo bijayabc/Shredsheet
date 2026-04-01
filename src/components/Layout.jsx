@@ -43,6 +43,7 @@ const Layout = () => {
   const handleLogout = () => {
       localStorage.removeItem("auth_token")
       localStorage.removeItem('workout_log_draft')
+      localStorage.removeItem('workout_timer_start')
       toast.success('Logout successful!')
       navigate('/login')
   }
