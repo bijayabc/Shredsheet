@@ -1,11 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { RiUser3Line, RiLogoutBoxRLine, RiCloseLine, RiMenu3Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import api from '../api/axios';
 
+const navLinks = [
+  { to: '/dashboard', label: 'Dashboard' },
+  { to: '/workouts', label: 'My Workouts' },
+  { to: '/routines', label: 'My Routines' },
+  { to: '/weight', label: 'Weight Logs' },
+];
+
 const Layout = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const [userData, setUserData] = useState(null)
   const toastShown = useRef(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -23,7 +31,7 @@ const Layout = () => {
       }
 
       try {
-        const res = await  api.get('/userinfo')
+        const res = await api.get('/userinfo')
         if (res.data.error) {
           console.log(res.data.error)
           return navigate('/login')
@@ -38,163 +46,112 @@ const Layout = () => {
       }
     }
     fetchUserData()
-  }, [navigate]);  
+  }, [navigate]);
 
   const handleLogout = () => {
-      localStorage.removeItem("auth_token")
-      localStorage.removeItem('workout_log_draft')
-      localStorage.removeItem('workout_timer_start')
-      toast.success('Logout successful!')
-      navigate('/login')
+    localStorage.removeItem("auth_token")
+    localStorage.removeItem('workout_log_draft')
+    localStorage.removeItem('workout_timer_start')
+    toast.success('Logout successful!')
+    navigate('/login')
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Navigation */}
-      <nav className="bg-white shadow-lg">
+    <div className="min-h-screen bg-slate-50">
+      <nav className="bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
-            <div className="flex">
-              <div className="flex-shrink-0 flex items-center">
-                <Link to="/dashboard" className="text-xl md:text-2xl font-bold text-indigo-600">
-                  ShredSheet
-                </Link>
-              </div>
-              <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                <Link
-                  to="/dashboard"
-                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                    location.pathname === '/dashboard'
-                      ? 'border-indigo-500 text-gray-900'
-                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-                  }`}
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  to="/workouts"
-                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                    location.pathname === '/workouts'
-                      ? 'border-indigo-500 text-gray-900'
-                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-                  }`}
-                >
-                  My Workouts
-                </Link>
-                <Link
-                  to="/routines"
-                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                    location.pathname === '/routines'
-                      ? 'border-indigo-500 text-gray-900'
-                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-                  }`}
-                >
-                  My Routines
-                </Link>
-                <Link
-                  to="/weight"
-                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                    location.pathname === '/weight'
-                      ? 'border-indigo-500 text-gray-900'
-                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-                  }`}
-                >
-                  Weight Logs
-                </Link>
+
+            {/* Left: logo + links */}
+            <div className="flex items-center gap-8">
+              <Link to="/dashboard" className="text-xl font-extrabold tracking-tight text-indigo-600">
+                ShredSheet
+              </Link>
+              <div className="hidden sm:flex items-center gap-1">
+                {navLinks.map(({ to, label }) => {
+                  const active = location.pathname === to
+                  return (
+                    <Link
+                      key={to}
+                      to={to}
+                      className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors duration-150 ${
+                        active
+                          ? 'bg-indigo-50 text-indigo-700'
+                          : 'text-gray-500 hover:bg-gray-100 hover:text-gray-800'
+                      }`}
+                    >
+                      {label}
+                    </Link>
+                  )
+                })}
               </div>
             </div>
-            <div className="flex items-center">
-              <span className="mr-4 px-4 py-1 text-indigo-700 font-semibold rounded-full">
-                Welcome, {userData && userData.name.split(" ")[0]}
-              </span>
+
+            {/* Right: greeting + icons */}
+            <div className="flex items-center gap-2">
+              {userData && (
+                <span className="hidden sm:block text-sm text-gray-400 font-medium mr-1">
+                  {userData.name.split(' ')[0]}
+                </span>
+              )}
               <Link
                 to="/profile"
-                className="text-gray-500 hover:text-gray-700"
-                title='profile'
+                title="Profile"
+                className="p-2 rounded-full text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors duration-150"
               >
-                <RiUser3Line className="h-6 w-6" />
+                <RiUser3Line className="h-5 w-5" />
               </Link>
               <button
-                className="hidden sm:block ml-4 text-gray-500 hover:text-gray-700"
                 onClick={handleLogout}
-                title='logout'
+                title="Logout"
+                className="hidden sm:flex p-2 rounded-full text-gray-400 hover:text-rose-500 hover:bg-rose-50 transition-colors duration-150"
               >
-                <RiLogoutBoxRLine className="h-6 w-6" />
+                <RiLogoutBoxRLine className="h-5 w-5" />
               </button>
-              {/* Mobile menu button */}
+              {/* Mobile menu toggle */}
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="sm:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                className="sm:hidden p-2 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors duration-150"
               >
-                {isMenuOpen ? (
-                  <RiCloseLine className="h-6 w-6" />
-                ) : (
-                  <RiMenu3Line className="h-6 w-6" />
-                )}
+                {isMenuOpen ? <RiCloseLine className="h-5 w-5" /> : <RiMenu3Line className="h-5 w-5" />}
               </button>
             </div>
+
           </div>
         </div>
 
         {/* Mobile menu */}
-        <div className={`${isMenuOpen ? 'block' : 'hidden'} sm:hidden`}>
-          <div className="pt-2 pb-3 space-y-1">
-            <Link
-              to="/dashboard"
-              className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
-                location.pathname === '/dashboard'
-                  ? 'border-indigo-500 text-indigo-700 bg-indigo-50'
-                  : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'
-              }`}
-              onClick={() => setIsMenuOpen(false)}
+        {isMenuOpen && (
+          <div className="sm:hidden border-t border-gray-100 bg-white px-3 py-2 space-y-1">
+            {navLinks.map(({ to, label }) => {
+              const active = location.pathname === to
+              return (
+                <Link
+                  key={to}
+                  to={to}
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`block px-3 py-2 rounded-md text-sm font-medium transition-colors duration-150 ${
+                    active
+                      ? 'bg-indigo-50 text-indigo-700'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-800'
+                  }`}
+                >
+                  {label}
+                </Link>
+              )
+            })}
+            <button
+              onClick={handleLogout}
+              className="w-full text-left px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-rose-50 hover:text-rose-500 transition-colors duration-150"
             >
-              Dashboard
-            </Link>
-            <Link
-              to="/workouts"
-              className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
-                location.pathname === '/workouts'
-                  ? 'border-indigo-500 text-indigo-700 bg-indigo-50'
-                  : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'
-              }`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              My Workouts
-            </Link>
-            <Link
-              to="/routines"
-              className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
-                location.pathname === '/routines'
-                  ? 'border-indigo-500 text-indigo-700 bg-indigo-50'
-                  : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'
-              }`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              My Routines
-            </Link>
-            <Link
-              to="/weight"
-              className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
-                location.pathname === '/weight'
-                  ? 'border-indigo-500 text-indigo-700 bg-indigo-50'
-                  : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'
-              }`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Weight Logs
-            </Link>
-            <div 
-            onClick={handleLogout}
-              className='border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'>
               Logout
-            </div>
+            </button>
           </div>
-        </div>
+        )}
       </nav>
 
-      {/* Main Content */}
       <main>
-        <Outlet context={{userData}}/>
+        <Outlet context={{ userData }} />
       </main>
     </div>
   );

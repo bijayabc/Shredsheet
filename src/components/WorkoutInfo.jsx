@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import api from '../api/axios';
 import { toast } from 'react-toastify';
+import { RiDeleteBin6Line } from 'react-icons/ri';
+import api from '../api/axios';
 
 const WorkoutInfo = () => {
   const location = useLocation()
@@ -52,58 +53,54 @@ const WorkoutInfo = () => {
   return (
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
       <div className="px-4 py-6 sm:px-0">
-        <div className="flex flex-col gap-2 sm:flex-row justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">{workout.title}</h2>
-          <div className="flex gap-4 items-center">
-            <button
-              onClick={handleDelete}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-rose-500 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 transition-colors duration-200"
-            >
-              Delete
-            </button>
+        <div className="flex justify-between items-center mb-6">
+          <div className="flex items-center gap-3">
             <Link
               to="/workouts"
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
+              className="text-sm font-medium text-gray-400 hover:text-indigo-600 transition-colors duration-150"
             >
-              Back
+              ← Back
             </Link>
+            <h2 className="text-2xl font-bold text-gray-900">{workout.title}</h2>
           </div>
+          <button
+            onClick={handleDelete}
+            title="Delete workout"
+            className="p-2 rounded-lg text-rose-500 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition-colors duration-200"
+          >
+            <RiDeleteBin6Line className="h-5 w-5" />
+          </button>
         </div>
 
-        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div className="bg-indigo-50 shadow-sm border border-indigo-100 overflow-hidden sm:rounded-xl">
           <div className="px-4 py-5 sm:p-6">
-            <div className="mb-6">
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <span className="text-sm text-gray-500">Date</span>
-                  <p className="mt-1 text-sm text-gray-900">
-                    {new Date(workout.date).toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}
-                  </p>
-                </div>
-                <div>
-                  <span className="text-sm text-gray-500">Duration</span>
-                  <p className="mt-1 text-sm text-gray-900">{workout.duration} minutes</p>
-                </div>
-                <div>
-                  <span className="text-sm text-gray-500">Body Parts</span>
-                  <p className="mt-1 text-sm text-gray-900">{workout.body_parts}</p>
-                </div>
-              </div>
+            <div className="mb-6 flex flex-wrap gap-3">
+              <span className="inline-flex items-center px-3 py-1.5 rounded-lg bg-indigo-50 text-sm text-indigo-700 font-medium">
+                {new Date(workout.date).toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}
+              </span>
+              <span className="inline-flex items-center px-3 py-1.5 rounded-lg bg-slate-100 text-sm text-slate-700 font-medium">
+                {workout.duration} min
+              </span>
+              {workout.body_parts && (
+                <span className="inline-flex items-center px-3 py-1.5 rounded-lg bg-slate-100 text-sm text-slate-700 font-medium">
+                  {workout.body_parts}
+                </span>
+              )}
             </div>
 
-            <div className="border-t border-gray-200 pt-4">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Exercises</h3>
+            <div className="border-t border-gray-100 pt-4">
+              <h3 className="text-base font-semibold text-gray-900 mb-3">Exercises</h3>
               {workout.exercises.map((exercise, index) => (
-                <div key={index} className="mb-4 p-4 border rounded-lg bg-gray-50">
-                  <h4 className="text-md font-medium text-gray-900">{exercise.name}</h4>
-                  <div className="mt-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div key={index} className="mb-3 p-4 border border-indigo-100 rounded-lg bg-white">
+                  <h4 className="text-sm font-semibold text-gray-900">{exercise.name}</h4>
+                  <div className="mt-2 grid grid-cols-1 sm:grid-cols-3 gap-2">
                     <div className="text-sm text-gray-500">Set 1: {exercise.set_1}</div>
                     <div className="text-sm text-gray-500">Set 2: {exercise.set_2}</div>
                     <div className="text-sm text-gray-500">Set 3: {exercise.set_3}</div>
                   </div>
                   {exercise.notes && (
-                    <div className="mt-2 text-sm text-gray-500">
-                      Notes: {exercise.notes}
+                    <div className="mt-3 px-3 py-2 bg-amber-100 border-l-4 border-amber-500 rounded-r text-sm text-gray-700 italic">
+                      {exercise.notes}
                     </div>
                   )}
                 </div>

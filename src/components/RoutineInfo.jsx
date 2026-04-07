@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 import api from '../api/axios';
 
 const RoutineInfo = () => {
@@ -52,43 +53,46 @@ const RoutineInfo = () => {
 return (
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
       <div className="px-4 py-6 sm:px-0">
-        <div className="flex flex-col gap-2 sm:flex-row justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">{routine.title}</h2>
-          <div className="flex gap-4 items-center">
+        <div className="flex justify-between items-start mb-6">
+          <div className="flex items-center gap-3">
+            <Link
+              to="/routines"
+              className="text-sm font-medium text-gray-400 hover:text-rose-500 transition-colors duration-150"
+            >
+              ← Back
+            </Link>
+            <h2 className="text-2xl font-bold text-gray-900">{routine.title}</h2>
+          </div>
+          <div className="flex items-center gap-2">
             <Link
               to="/workouts/new"
               state={{ routineExercises: routine.exercises }}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-violet-500 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 transition-colors duration-200"
+              className="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-indigo-500 hover:bg-indigo-600 transition-colors duration-200"
             >
-              Log Workout
+              Log
             </Link>
             <Link
               to={`/routines/edit/${routine._id}`}
               state={{ routine }}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-500 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
+              className="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-emerald-500 hover:bg-emerald-600 transition-colors duration-200"
             >
               Update
             </Link>
             <button
               onClick={handleDelete}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-rose-500 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 transition-colors duration-200"
+              title="Delete routine"
+              className="p-2 rounded-lg text-rose-500 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition-colors duration-200"
             >
-              Delete
+              <RiDeleteBin6Line className="h-5 w-5" />
             </button>
-            <Link
-              to="/routines"
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
-            >
-              Back
-            </Link>
           </div>
         </div>
 
-        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div className="bg-rose-50 shadow-sm border border-rose-100 overflow-hidden sm:rounded-xl">
           <div className="px-4 py-5 sm:p-6">
-            <div className="space-y-4">
+            <div className="space-y-3">
               {routine.exercises.map((exercise) => (
-                <div key={exercise._id} className="p-4 border rounded-lg bg-gray-50">
+                <div key={exercise._id} className="p-4 border border-rose-100 rounded-lg bg-white">
                   <div className="flex justify-between items-center mb-2">
                     <h4 className="text-md font-medium text-gray-900">{exercise.name}</h4>
                     <span className="text-sm text-gray-500">1RM: {exercise.one_rep_max}lbs</span>
@@ -99,8 +103,8 @@ return (
                     <div className="text-sm text-gray-500">Set 3: {exercise.set_3}</div>
                   </div>
                   {exercise.notes && (
-                    <div className="mt-2 text-sm text-gray-500">
-                      Notes: {exercise.notes}
+                    <div className="mt-3 px-3 py-2 bg-amber-100 border-l-4 border-amber-500 rounded-r text-sm text-gray-700 italic">
+                      {exercise.notes}
                     </div>
                   )}
                 </div>

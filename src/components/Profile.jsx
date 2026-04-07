@@ -34,7 +34,38 @@ const Profile = () => {
   }, [contextData]); // Only run when contextData changes
 
   if (!contextData) {
-    return <div>Loading...</div>; // Show loading until userData is available
+    return (
+      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 animate-pulse">
+        <div className="px-4 py-6 sm:px-0">
+          <div className="h-7 bg-gray-200 rounded w-40 mb-6" />
+          <div className="bg-white rounded-xl p-6 space-y-6">
+            <div className="flex items-center gap-4">
+              <div className="h-16 w-16 rounded-full bg-gray-200" />
+              <div className="space-y-2">
+                <div className="h-5 bg-gray-200 rounded w-32" />
+                <div className="h-4 bg-gray-100 rounded w-24" />
+              </div>
+            </div>
+            <div className="border-t border-gray-100 pt-6 space-y-4">
+              {[...Array(3)].map((_, i) => (
+                <div key={i}>
+                  <div className="h-4 bg-gray-200 rounded w-20 mb-1" />
+                  <div className="h-8 bg-gray-100 rounded-lg" />
+                </div>
+              ))}
+            </div>
+            <div className="border-t border-gray-100 pt-6 space-y-4">
+              {[...Array(2)].map((_, i) => (
+                <div key={i}>
+                  <div className="h-4 bg-gray-200 rounded w-28 mb-1" />
+                  <div className="h-8 bg-gray-100 rounded-lg" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   const handleSubmit = async (e) => {
@@ -85,7 +116,7 @@ const Profile = () => {
           <h2 className="text-2xl font-bold text-gray-900">Profile Settings</h2>
         </div>
 
-        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div className="bg-white shadow-sm border border-gray-100 overflow-hidden sm:rounded-xl">
           <div className="px-4 py-5 sm:p-6">
             <div className="flex items-center space-x-4 mb-6">
               <div className="h-16 w-16 rounded-full bg-indigo-100 flex items-center justify-center">
@@ -102,7 +133,7 @@ const Profile = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="border-t border-gray-200 pt-6">
                 <div className="flex items-center space-x-3 mb-4">
-                  <RiUserSettingsLine className="h-5 w-5 text-gray-400" />
+                  <RiUserSettingsLine className="h-5 w-5 text-indigo-400" />
                   <h4 className="text-lg font-medium text-gray-900">Account Information</h4>
                 </div>
                 <div className="space-y-4">
@@ -143,7 +174,7 @@ const Profile = () => {
 
               <div className="border-t border-gray-200 pt-6">
                 <div className="flex items-center space-x-3 mb-4">
-                  <RiLockPasswordLine className="h-5 w-5 text-gray-400" />
+                  <RiLockPasswordLine className="h-5 w-5 text-indigo-400" />
                   <h4 className="text-lg font-medium text-gray-900">Change Password</h4>
                 </div>
                 <div className="space-y-4">
