@@ -4,13 +4,14 @@ import api from '../api/axios';
 import { toast } from 'react-toastify';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-let pendingDraftDiscardWarning = false;
+let pendingRoutineConflict = false;
 
 const WorkoutForm = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const routineExercises = location.state?.routineExercises ?? null
   const toastShown = useRef(false);
+  const conflictHandled = useRef(false);
 
   const [workoutData, setWorkoutData] = useState(() => {
     const defaultData = {
@@ -22,10 +23,14 @@ const WorkoutForm = () => {
     }
 
     if (routineExercises && routineExercises.length > 0) {
-      const hasDraft = !!localStorage.getItem('workout_log_draft')
-      if (hasDraft) {
-        localStorage.removeItem('workout_log_draft')
-        pendingDraftDiscardWarning = true
+      const draftString = localStorage.getItem('workout_log_draft')
+      if (draftString) {
+        // Draft exists — load it for now; useEffect will ask the user
+        pendingRoutineConflict = true
+        try {
+          const parsed = JSON.parse(draftString)
+          if (parsed.draftData) return parsed.draftData
+        } catch { /* fall through to defaultData */ }
       }
       return {
         ...defaultData,
@@ -52,17 +57,33 @@ const WorkoutForm = () => {
   });
 
   useEffect(() => {
-    if (!toastShown.current) {
-      if (pendingDraftDiscardWarning) {
-        toast.warn("Your saved draft was discarded — loading routine exercises instead.")
-        pendingDraftDiscardWarning = false
-        toastShown.current = true
+    if (pendingRoutineConflict && !conflictHandled.current) {
+      conflictHandled.current = true
+      pendingRoutineConflict = false
+      const confirmed = window.confirm(
+        "You have a saved draft. Discard it and load routine exercises instead?"
+      )
+      if (confirmed) {
+        localStorage.removeItem('workout_log_draft')
+        setWorkoutData({
+          title: '', duration: '', body_parts: '', date: '',
+          exercises: routineExercises.map(ex => ({
+            id: Date.now() + Math.random(),
+            name: ex.name,
+            set_1: ex.set_1,
+            set_2: ex.set_2,
+            set_3: ex.set_3,
+          }))
+        })
+        toast.info("Draft discarded — routine exercises loaded.")
       } else {
-        const draftString = localStorage.getItem('workout_log_draft')
-        if (draftString) {
-          toast.success("Loading your saved workout draft!")
-          toastShown.current = true
-        }
+        toast.success("Loading your saved workout draft!")
+      }
+    } else if (!toastShown.current) {
+      toastShown.current = true
+      const draftString = localStorage.getItem('workout_log_draft')
+      if (draftString) {
+        toast.success("Loading your saved workout draft!")
       }
     }
   }, []);

@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { RiUser3Line, RiLogoutBoxRLine, RiCloseLine, RiMenu3Line } from 'react-icons/ri';
+import { RiUser3Line, RiLogoutBoxRLine, RiMenu3Line, RiDashboardLine, RiRunLine, RiFlashlightLine, RiScalesLine } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import api from '../api/axios';
 
 const navLinks = [
-  { to: '/dashboard', label: 'Dashboard' },
-  { to: '/workouts', label: 'My Workouts' },
-  { to: '/routines', label: 'My Routines' },
-  { to: '/weight', label: 'Weight Logs' },
+  { to: '/dashboard', label: 'Dashboard', icon: RiDashboardLine },
+  { to: '/workouts', label: 'My Workouts', icon: RiRunLine },
+  { to: '/routines', label: 'My Routines', icon: RiFlashlightLine },
+  { to: '/weight', label: 'Weight Logs', icon: RiScalesLine },
 ];
 
 const Layout = () => {
@@ -17,6 +17,21 @@ const Layout = () => {
   const [userData, setUserData] = useState(null)
   const toastShown = useRef(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const menuRef = useRef(null)
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setIsMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('touchstart', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('touchstart', handleClickOutside)
+    }
+  }, [])
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -109,45 +124,58 @@ const Layout = () => {
                 <RiLogoutBoxRLine className="h-5 w-5" />
               </button>
               {/* Mobile menu toggle */}
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="sm:hidden p-2 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors duration-150"
-              >
-                {isMenuOpen ? <RiCloseLine className="h-5 w-5" /> : <RiMenu3Line className="h-5 w-5" />}
-              </button>
+              <div className="relative sm:hidden" ref={menuRef}>
+                <button
+                  onClick={() => setIsMenuOpen((o) => !o)}
+                  className="p-2 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors duration-150"
+                >
+                  <RiMenu3Line className="h-5 w-5" />
+                </button>
+
+                {isMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-lg border border-gray-100 z-50 overflow-hidden">
+                    {userData && (
+                      <div className="px-4 py-3 border-b border-gray-100">
+                        <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">Signed in as</p>
+                        <p className="text-sm font-semibold text-gray-800 truncate">{userData.name}</p>
+                      </div>
+                    )}
+                    <div className="py-1">
+                      {navLinks.map(({ to, label, icon: Icon }) => {
+                        const active = location.pathname === to
+                        return (
+                          <Link
+                            key={to}
+                            to={to}
+                            onClick={() => setIsMenuOpen(false)}
+                            className={`flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors duration-150 ${
+                              active
+                                ? 'bg-indigo-50 text-indigo-600'
+                                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                            }`}
+                          >
+                            <Icon className="h-4 w-4 shrink-0" />
+                            {label}
+                          </Link>
+                        )
+                      })}
+                    </div>
+                    <div className="border-t border-gray-100 py-1">
+                      <button
+                        onClick={handleLogout}
+                        className="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-rose-500 hover:bg-rose-50 transition-colors duration-150"
+                      >
+                        <RiLogoutBoxRLine className="h-4 w-4 shrink-0" />
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
           </div>
         </div>
-
-        {/* Mobile menu */}
-        {isMenuOpen && (
-          <div className="sm:hidden border-t border-gray-100 bg-white px-3 py-2 space-y-1">
-            {navLinks.map(({ to, label }) => {
-              const active = location.pathname === to
-              return (
-                <Link
-                  key={to}
-                  to={to}
-                  onClick={() => setIsMenuOpen(false)}
-                  className={`block px-3 py-2 rounded-md text-sm font-medium transition-colors duration-150 ${
-                    active
-                      ? 'bg-indigo-50 text-indigo-700'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-800'
-                  }`}
-                >
-                  {label}
-                </Link>
-              )
-            })}
-            <button
-              onClick={handleLogout}
-              className="w-full text-left px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-rose-50 hover:text-rose-500 transition-colors duration-150"
-            >
-              Logout
-            </button>
-          </div>
-        )}
       </nav>
 
       <main>

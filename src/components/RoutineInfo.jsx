@@ -1,19 +1,37 @@
+import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { RiDeleteBin6Line } from 'react-icons/ri';
+import { RiDeleteBin6Line, RiMore2Line, RiEditLine, RiAddLine, RiArrowLeftSLine } from 'react-icons/ri';
 import api from '../api/axios';
 
 const RoutineInfo = () => {
   const location = useLocation()
   const routine = location.state?.routine
   const navigate = useNavigate()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const menuRef = useRef(null)
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('touchstart', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('touchstart', handleClickOutside)
+    }
+  }, [])
 
   const handleDelete = async(e) => {
     e.preventDefault()
+    setMenuOpen(false)
     if (!window.confirm('Are you sure you want to delete this routine?')) return
     try {
       const res = await api.delete('/routine', {
-        data: routine // different syntax for delete route
+        data: routine
       })
       if (res.data.success) {
         toast.success("Routine deleted successfully!")
@@ -49,42 +67,60 @@ const RoutineInfo = () => {
       </div>
     );
   }
-  
-return (
+
+  return (
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
       <div className="px-4 py-6 sm:px-0">
-        <div className="flex justify-between items-start mb-6">
-          <div className="flex items-center gap-3">
+        <div className="flex justify-between items-center mb-6">
+          <div className="flex items-center gap-3 min-w-0">
             <Link
               to="/routines"
-              className="text-sm font-medium text-gray-400 hover:text-rose-500 transition-colors duration-150"
+              className="p-2 rounded-lg text-gray-500 bg-gray-100 hover:bg-gray-200 transition-colors duration-200 shrink-0"
+              aria-label="Back"
             >
-              ← Back
+              <RiArrowLeftSLine className="h-5 w-5" />
             </Link>
-            <h2 className="text-2xl font-bold text-gray-900">{routine.title}</h2>
+            <h2 className="text-2xl font-bold text-gray-900 truncate">{routine.title}</h2>
           </div>
-          <div className="flex items-center gap-2">
-            <Link
-              to="/workouts/new"
-              state={{ routineExercises: routine.exercises }}
-              className="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-indigo-500 hover:bg-indigo-600 transition-colors duration-200"
-            >
-              Log
-            </Link>
-            <Link
-              to={`/routines/edit/${routine._id}`}
-              state={{ routine }}
-              className="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-emerald-500 hover:bg-emerald-600 transition-colors duration-200"
-            >
-              Update
-            </Link>
+
+          <div className="relative shrink-0 ml-3" ref={menuRef}>
             <button
-              onClick={handleDelete}
-              title="Delete routine"
-              className="p-2 rounded-lg text-rose-500 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition-colors duration-200"
+              onClick={() => setMenuOpen((o) => !o)}
+              className="p-2 rounded-lg text-gray-500 bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
+              aria-label="Actions"
             >
-              <RiDeleteBin6Line className="h-5 w-5" />
+              <RiMore2Line className="h-5 w-5" />
             </button>
+
+            {menuOpen && (
+              <div className="absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-lg border border-gray-100 z-50 overflow-hidden">
+                <Link
+                  to="/workouts/new"
+                  state={{ routineExercises: routine.exercises }}
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors"
+                >
+                  <RiAddLine className="h-4 w-4" />
+                  Log Workout
+                </Link>
+                <Link
+                  to={`/routines/edit/${routine._id}`}
+                  state={{ routine }}
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-600 transition-colors"
+                >
+                  <RiEditLine className="h-4 w-4" />
+                  Edit Routine
+                </Link>
+                <button
+                  onClick={handleDelete}
+                  className="flex items-center gap-3 w-full px-4 py-3 text-sm text-rose-600 hover:bg-rose-50 transition-colors border-t border-gray-100"
+                >
+                  <RiDeleteBin6Line className="h-4 w-4" />
+                  Delete Routine
+                </button>
+              </div>
+            )}
           </div>
         </div>
 

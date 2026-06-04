@@ -54,7 +54,7 @@ const Register = () => {
         placeholder={placeholder}
         autoComplete={autoComplete}
         required
-        className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 text-sm"
+        className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 text-base"
         onChange={(e) => setFormData({ ...formData, [id]: e.target.value })}
       />
     </div>
@@ -87,7 +87,7 @@ const Register = () => {
                   min="1"
                   placeholder="e.g. 185"
                   required
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 text-sm"
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 text-base"
                   onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
                 />
               </div>
@@ -98,7 +98,7 @@ const Register = () => {
                   name="dob"
                   type="date"
                   required
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 text-sm"
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 text-base"
                   onChange={(e) => setFormData({ ...formData, dob: e.target.value })}
                 />
               </div>
