@@ -75,7 +75,7 @@ const RoutineForm = () => {
                       type="text"
                       placeholder="Exercise name"
                       required
-                      className="flex-1 rounded-md border border-gray-300 focus:border-rose-400 focus:ring-rose-400 h-9 pl-2 text-sm"
+                      className="flex-1 rounded-md border border-gray-300 focus:border-rose-400 focus:ring-rose-400 h-9 pl-2 text-base"
                       onChange={(e) => {
                         const newExercises = [...routineData.exercises];
                         newExercises.find(ex => ex.id === exercise.id).name = e.target.value;
@@ -98,7 +98,7 @@ const RoutineForm = () => {
                         <input
                           type="text"
                           placeholder="Lb × Reps"
-                          className="w-full rounded-md border border-gray-300 focus:border-rose-400 focus:ring-rose-400 h-9 pl-2 text-sm"
+                          className="w-full rounded-md border border-gray-300 focus:border-rose-400 focus:ring-rose-400 h-9 pl-2 text-base"
                           onChange={(e) => {
                             const newExercises = [...routineData.exercises];
                             newExercises.find(ex => ex.id === exercise.id)[set] = e.target.value;
@@ -115,7 +115,7 @@ const RoutineForm = () => {
                       <input
                         type="number"
                         placeholder="Enter weight"
-                        className="w-full rounded-md border border-gray-300 focus:border-rose-400 focus:ring-rose-400 h-9 pl-2 text-sm"
+                        className="w-full rounded-md border border-gray-300 focus:border-rose-400 focus:ring-rose-400 h-9 pl-2 text-base"
                         onChange={(e) => {
                           const newExercises = [...routineData.exercises];
                           newExercises.find(ex => ex.id === exercise.id).one_rep_max = e.target.value;
@@ -128,7 +128,7 @@ const RoutineForm = () => {
                       <input
                         type="text"
                         placeholder="Additional information"
-                        className="w-full rounded-md border border-gray-300 focus:border-rose-400 focus:ring-rose-400 h-9 pl-2 text-sm"
+                        className="w-full rounded-md border border-gray-300 focus:border-rose-400 focus:ring-rose-400 h-9 pl-2 text-base"
                         onChange={(e) => {
                           const newExercises = [...routineData.exercises];
                           newExercises.find(ex => ex.id === exercise.id).notes = e.target.value;

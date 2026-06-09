@@ -94,7 +94,7 @@ const Edit = () => {
                       type="text"
                       placeholder="Exercise name"
                       value={exercise.name}
-                      className="flex-1 rounded-md border border-gray-300 focus:border-rose-400 focus:ring-rose-400 h-9 pl-2 text-sm"
+                      className="flex-1 rounded-md border border-gray-300 focus:border-rose-400 focus:ring-rose-400 h-9 pl-2 text-base"
                       onChange={(e) => {
                         const newExercises = [...routineData.exercises];
                         newExercises.find(ex => ex.id === exercise.id).name = e.target.value;
@@ -118,7 +118,7 @@ const Edit = () => {
                           type="text"
                           placeholder="Weight × Reps"
                           value={exercise[set]}
-                          className="w-full rounded-md border border-gray-300 focus:border-rose-400 focus:ring-rose-400 h-9 pl-2 text-sm"
+                          className="w-full rounded-md border border-gray-300 focus:border-rose-400 focus:ring-rose-400 h-9 pl-2 text-base"
                           onChange={(e) => {
                             const newExercises = [...routineData.exercises];
                             newExercises.find(ex => ex.id === exercise.id)[set] = e.target.value;
@@ -136,7 +136,7 @@ const Edit = () => {
                         type="number"
                         placeholder="Enter weight"
                         value={exercise.one_rep_max}
-                        className="w-full rounded-md border border-gray-300 focus:border-rose-400 focus:ring-rose-400 h-9 pl-2 text-sm"
+                        className="w-full rounded-md border border-gray-300 focus:border-rose-400 focus:ring-rose-400 h-9 pl-2 text-base"
                         onChange={(e) => {
                           const newExercises = [...routineData.exercises];
                           newExercises.find(ex => ex.id === exercise.id).one_rep_max = e.target.value;
@@ -150,7 +150,7 @@ const Edit = () => {
                         type="text"
                         placeholder="Additional information"
                         value={exercise.notes}
-                        className="w-full rounded-md border border-gray-300 focus:border-rose-400 focus:ring-rose-400 h-9 pl-2 text-sm"
+                        className="w-full rounded-md border border-gray-300 focus:border-rose-400 focus:ring-rose-400 h-9 pl-2 text-base"
                         onChange={(e) => {
                           const newExercises = [...routineData.exercises];
                           newExercises.find(ex => ex.id === exercise.id).notes = e.target.value;
